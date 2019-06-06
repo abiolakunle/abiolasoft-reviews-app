@@ -12,11 +12,18 @@ const reviews = require("./routes/api/reviews");
 
 app.use("/api/reviews", reviews);
 
-const port = process.env.PORT || 1004;
+//Handle production
+if (process.env.NODE_ENV === "production") {
+  //static folder
+  app.use(express.static(__dirname + "/public/"));
 
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+  //Handle SPA
+  app.get(/.*/, (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+  });
+}
+
+const port = process.env.PORT || 1004;
 
 app.listen(port, () => {
   console.log(`Listening on port ` + port);
