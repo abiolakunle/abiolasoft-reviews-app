@@ -4,13 +4,18 @@ const mongodb = require("mongodb");
 const router = express.Router();
 
 //get all reviews
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   const reviews = await loadReviewsCollection();
-  res.send(await reviews.find({ projectId: req.params.id }).toArray());
+  const reviewsArray = await reviews
+    .find({
+      //projectId: req.params.id
+    })
+    .toArray();
+  res.send(reviewsArray);
 });
 
 //Add review
-router.post("/:id", async (req, res) => {
+router.post("/", async (req, res) => {
   const reviews = await loadReviewsCollection();
   await reviews.insertOne({
     name: req.body.name,
